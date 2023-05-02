@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:excel/excel.dart';
-import 'package:excel_json_converter/show_dialog.dart';
+import 'package:excel_json_converter/core/presentation/widget/show_dialog.dart';
 import 'package:flutter/material.dart';
 
 import 'get_export_directory.dart';
