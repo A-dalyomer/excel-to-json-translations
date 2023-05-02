@@ -8,6 +8,7 @@ class LocalizationsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      title: 'Localizations App',
       home: HomeScreen(),
     );
   }
