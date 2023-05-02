@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:excel_json_converter/core/presentation/widget/show_dialog.dart';
+import 'package:file_saver/file_saver.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'get_export_directory.dart';
@@ -10,15 +12,17 @@ import 'pick_localization_file.dart';
 void exportLocalizationFiles(BuildContext context) async {
   try {
     /// pick Excel file
-    File? selectedFile = await pickLocalizationsFile();
-    if (selectedFile == null) return;
+    Uint8List? selectedFileAsBytes = await pickLocalizationsFile();
+    if (selectedFileAsBytes == null) return;
 
     /// prepare save directory
-    Directory downloadsDirectory = await getExportDirectory();
+    late final Directory downloadsDirectory;
+    if (!kIsWeb) {
+      downloadsDirectory = await getExportDirectory();
+    }
 
     /// read the selected file
-    var bytes = selectedFile.readAsBytesSync();
-    var excel = Excel.decodeBytes(bytes);
+    var excel = Excel.decodeBytes(selectedFileAsBytes);
 
     /// loop tables in files
     /// currently only 1 table is present in file
@@ -41,13 +45,21 @@ void exportLocalizationFiles(BuildContext context) async {
       /// export result maps to localization files
       for (var languageMap in allTranslations) {
         String languageCode = languageMap['language_code'] ?? 'unknown';
-        String filePath = "${downloadsDirectory.path}\\$languageCode.json";
-        File(filePath).writeAsStringSync(jsonEncode(languageMap));
+        if (kIsWeb) {
+          await FileSaver.instance.saveFile(
+            name: '$languageCode.json',
+            bytes: Uint8List.fromList(jsonEncode(languageCode).codeUnits),
+          );
+        } else {
+          String filePath = "${downloadsDirectory.path}\\$languageCode.json";
+          File(filePath).writeAsStringSync(jsonEncode(languageMap));
+          // ignore: use_build_context_synchronously
+          showAppDialog(
+              'File saved in path: ${downloadsDirectory.path}', context,
+              title: 'saved files successfully');
+        }
       }
     }
-    // ignore: use_build_context_synchronously
-    showAppDialog('File saved in path: ${downloadsDirectory.path}', context,
-        title: 'saved files successfully');
   } catch (exception) {
     showAppDialog('error: $exception', context);
   }
