@@ -53,13 +53,14 @@ void exportLocalizationFiles(BuildContext context) async {
         } else {
           String filePath = "${downloadsDirectory.path}\\$languageCode.json";
           File(filePath).writeAsStringSync(jsonEncode(languageMap));
-          // ignore: use_build_context_synchronously
-          showAppDialog(
-              'File saved in path: ${downloadsDirectory.path}', context,
-              title: 'saved files successfully');
         }
       }
     }
+    // ignore: use_build_context_synchronously
+    showAppDialog(
+        'File saved in path: ${kIsWeb ? 'Downloads' : downloadsDirectory.path}',
+        context,
+        title: 'saved files successfully');
   } catch (exception) {
     showAppDialog('error: $exception', context);
   }
