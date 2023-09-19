@@ -56,8 +56,33 @@ Future<bool> exportLocalizationFiles(BuildContext context,
             bytes: Uint8List.fromList(jsonEncode(languageCode).codeUnits),
           );
         } else {
+          final appExportFolder = Directory(
+            '${downloadsDirectory.path}\\localizations exporter',
+          );
+          if (!(await appExportFolder.exists())) {
+            if (kDebugMode) {
+              print('creating target app export folder');
+            }
+            appExportFolder.create();
+            if (kDebugMode) {
+              print('done creating app export folder');
+            }
+          }
+          final appLocalizationsFolder = Directory(
+            '${appExportFolder.path}\\${selectedFile.name.split('.').first}',
+          );
+          if (!(await appLocalizationsFolder.exists())) {
+            if (kDebugMode) {
+              print(
+                  'creating target folder: ${selectedFile.name.split('.').first}');
+            }
+            appLocalizationsFolder.create();
+            if (kDebugMode) {
+              print('done creating ${selectedFile.name.split('.').first}');
+            }
+          }
           String filePath =
-              "${downloadsDirectory.path}\\${selectedFile.name.split('.').first}\\$languageCode.json";
+              "${appLocalizationsFolder.path}\\$languageCode.json";
           File(filePath).writeAsStringSync(jsonEncode(languageMap));
         }
       }
