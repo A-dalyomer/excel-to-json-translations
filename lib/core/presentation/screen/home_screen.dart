@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../application/service/export_localization_files.dart';
+import '../widget/drop_file_container.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -11,14 +12,41 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Localizations Exporter'),
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () => exportLocalizationFiles(context),
-          child: const Padding(
-            padding: EdgeInsets.all(18.0),
-            child: Text('Select File'),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Text(
+              'Drag your files here',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
-        ),
+          const DropFileContainer(),
+          const SizedBox(height: 20),
+          const Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Text(
+              'OR',
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Center(
+            child: TextButton(
+              onPressed: () => exportLocalizationFiles(context),
+              child: const Padding(
+                padding: EdgeInsets.all(18.0),
+                child: Text('Select a file'),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

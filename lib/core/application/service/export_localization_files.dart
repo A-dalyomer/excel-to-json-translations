@@ -9,10 +9,12 @@ import 'package:flutter/material.dart';
 import 'get_export_directory.dart';
 import 'pick_localization_file.dart';
 
-void exportLocalizationFiles(BuildContext context) async {
+Future<void> exportLocalizationFiles(BuildContext context,
+    {Uint8List? droppedFile}) async {
   try {
     /// pick Excel file
-    Uint8List? selectedFileAsBytes = await pickLocalizationsFile();
+    Uint8List? selectedFileAsBytes =
+        droppedFile ?? await pickLocalizationsFile();
     if (selectedFileAsBytes == null) return;
 
     /// prepare save directory
@@ -51,16 +53,20 @@ void exportLocalizationFiles(BuildContext context) async {
             bytes: Uint8List.fromList(jsonEncode(languageCode).codeUnits),
           );
         } else {
-          String filePath = "${downloadsDirectory.path}\\$languageCode.json";
+          String filePath =
+              "${downloadsDirectory.path}\\localizations exporter\\$languageCode.json";
           File(filePath).writeAsStringSync(jsonEncode(languageMap));
         }
       }
     }
-    // ignore: use_build_context_synchronously
-    showAppDialog(
+    if (droppedFile == null) {
+      // ignore: use_build_context_synchronously
+      showAppDialog(
         'File saved in path: ${kIsWeb ? 'Downloads' : downloadsDirectory.path}',
         context,
-        title: 'saved files successfully');
+        title: 'saved files successfully',
+      );
+    }
   } catch (exception) {
     showAppDialog('error: $exception', context);
   }
