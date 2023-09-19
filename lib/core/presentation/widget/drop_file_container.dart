@@ -34,9 +34,9 @@ class _DropFileContainerState extends State<DropFileContainer> {
           loading = true;
         });
         // ignore: use_build_context_synchronously
-        await exportDroppedLocalizationFiles(
+        await exportMultiAppLocalizationFiles(
           context,
-          droppedFiles: droppedFiles,
+          filesList: droppedFiles,
         );
 
         setState(() {

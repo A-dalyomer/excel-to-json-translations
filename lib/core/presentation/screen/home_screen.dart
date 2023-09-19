@@ -1,6 +1,6 @@
+import 'package:excel_json_converter/core/application/service/pick_localization_file.dart';
 import 'package:flutter/material.dart';
 
-import '../../application/service/export_localization_files.dart';
 import '../widget/drop_file_container.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
           ),
           Center(
             child: TextButton(
-              onPressed: () => exportLocalizationFiles(context),
+              onPressed: () => pickLocalizationsFile(context),
               child: const Padding(
                 padding: EdgeInsets.all(18.0),
                 child: Text('Select a file'),
