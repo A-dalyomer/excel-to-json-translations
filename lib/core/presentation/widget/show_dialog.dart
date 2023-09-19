@@ -69,9 +69,7 @@ showAppDialog(
                                   acceptFunction();
                                 }
                               },
-                              child: Text(
-                                'accept',
-                              ),
+                              child: const Text('accept'),
                             ),
                           ],
                         ),

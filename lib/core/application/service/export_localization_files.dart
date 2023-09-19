@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:excel/excel.dart';
+import 'package:excel_json_converter/core/dto/selected_file.dart';
 import 'package:excel_json_converter/core/presentation/widget/show_dialog.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/foundation.dart';
@@ -9,13 +10,15 @@ import 'package:flutter/material.dart';
 import 'get_export_directory.dart';
 import 'pick_localization_file.dart';
 
-Future<void> exportLocalizationFiles(BuildContext context,
-    {Uint8List? droppedFile}) async {
+Future<bool> exportLocalizationFiles(BuildContext context,
+    {SelectedFile? droppedFile}) async {
   try {
     /// pick Excel file
-    Uint8List? selectedFileAsBytes =
-        droppedFile ?? await pickLocalizationsFile();
-    if (selectedFileAsBytes == null) return;
+    SelectedFile? selectedFile = droppedFile ?? await pickLocalizationsFile();
+    if (selectedFile == null) return false;
+
+    Uint8List? selectedFileAsBytes = selectedFile.fileBytes;
+    if (selectedFileAsBytes == null) return false;
 
     /// prepare save directory
     late final Directory downloadsDirectory;
@@ -54,7 +57,7 @@ Future<void> exportLocalizationFiles(BuildContext context,
           );
         } else {
           String filePath =
-              "${downloadsDirectory.path}\\localizations exporter\\$languageCode.json";
+              "${downloadsDirectory.path}\\${selectedFile.name.split('.').first}\\$languageCode.json";
           File(filePath).writeAsStringSync(jsonEncode(languageMap));
         }
       }
@@ -67,7 +70,9 @@ Future<void> exportLocalizationFiles(BuildContext context,
         title: 'saved files successfully',
       );
     }
+    return true;
   } catch (exception) {
     showAppDialog('error: $exception', context);
+    return false;
   }
 }
