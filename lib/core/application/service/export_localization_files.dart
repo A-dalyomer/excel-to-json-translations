@@ -1,13 +1,13 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:excel/excel.dart';
 import 'package:excel_json_converter/core/dto/selected_file.dart';
-import 'package:file_saver/file_saver.dart';
+import 'package:excel_json_converter/core/extension/capitalize_first_character.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import '../../dto/saved_file_state.dart';
 import 'get_app_files_directory.dart';
+import 'save_file.dart';
 
 Future<SavedFileState> exportLocalizationFiles(BuildContext context,
     {SelectedFile? targetFile}) async {
@@ -34,9 +34,12 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
       List<Map<String, String>> allTranslations =
           List.generate(excel.tables[table]!.rows[0].length - 1, (index) => {});
 
+      List<String> localizationKeys = [];
+
       /// loop on all excel rows
       for (var row in excel.tables[table]!.rows) {
         String key = row[0]!.value.toString();
+        localizationKeys.add(key);
 
         /// loop on row columns
         /// loads translation values
@@ -49,16 +52,41 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
       /// export result maps to localization files
       for (var languageMap in allTranslations) {
         String languageCode = languageMap['language_code'] ?? 'unknown';
-        if (kIsWeb) {
-          await FileSaver.instance.saveFile(
-            name: '$languageCode.json',
-            bytes: Uint8List.fromList(jsonEncode(languageCode).codeUnits),
-          );
-        } else {
-          String filePath = "${saveDirectory.path}\\$languageCode.json";
-          File(filePath).writeAsStringSync(jsonEncode(languageMap));
-        }
+        await saveFile(
+          fileSavePath: saveDirectory.path,
+          fileName: languageCode,
+          fileExtension: 'json',
+          fileContent: languageMap,
+        );
       }
+
+      String dartCode = '';
+      for (String currentKey in localizationKeys) {
+        if (currentKey.isEmpty) {
+          continue;
+        }
+        List<String> keyWords = currentKey.replaceAll(' ', '').split('_');
+        String variableName = '';
+        for (int wordIndex = 0; wordIndex < keyWords.length; wordIndex++) {
+          if (wordIndex != 0) {
+            keyWords[wordIndex] =
+                keyWords[wordIndex].toLowerCase().capitalizeFirst();
+          }
+        }
+        variableName = keyWords.join();
+        if (currentKey == 'continue' || currentKey == 'this') {
+          variableName = '${variableName}1';
+        }
+        dartCode = '$dartCode  String $variableName = "$currentKey";\n';
+      }
+
+      dartCode = 'class AppLocalizations {\n$dartCode}';
+      await saveFile(
+        fileSavePath: saveDirectory.path,
+        fileName: 'app_localizations',
+        fileExtension: 'dart',
+        fileContent: dartCode,
+      );
     }
     return SavedFileState(
       fileState: FileState.success,
