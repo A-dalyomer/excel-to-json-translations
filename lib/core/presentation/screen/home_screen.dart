@@ -1,4 +1,5 @@
 import 'package:excel_json_converter/core/application/service/pick_localization_file.dart';
+import 'package:excel_json_converter/core/presentation/widget/about_app_button.dart';
 import 'package:flutter/material.dart';
 
 import '../widget/drop_file_container.dart';
@@ -11,6 +12,7 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Localizations Exporter'),
+        actions: const [AboutAppButton()],
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
