@@ -59,10 +59,15 @@ class _DropFileContainerState extends State<DropFileContainer> {
         radius: const Radius.circular(12),
         padding: const EdgeInsets.all(6),
         dashPattern: const [6],
-        child: Container(
+        child: AnimatedContainer(
           height: 200,
           width: 200,
-          color: _dragging ? Colors.blue.withOpacity(0.4) : Colors.transparent,
+          duration: const Duration(milliseconds: 200),
+          decoration: BoxDecoration(
+            color:
+                _dragging ? Colors.blue.withOpacity(0.4) : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+          ),
           child: !loading
               ? const Center(child: Text("Drop here"))
               : const Center(
