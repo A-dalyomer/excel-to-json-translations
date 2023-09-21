@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:excel_json_converter/core/dto/selected_file.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 
@@ -26,8 +25,9 @@ class _DropFileContainerState extends State<DropFileContainer> {
       onDragDone: (detail) async {
         for (var element in detail.files) {
           SelectedFile bytes = SelectedFile(
-              name: element.name,
-              fileBytes: File(element.path).readAsBytesSync());
+            name: kIsWeb ? 'name' : element.name,
+            fileBytes: await element.readAsBytes(),
+          );
           droppedFiles.add(bytes);
         }
         setState(() {
