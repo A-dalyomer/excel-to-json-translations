@@ -8,6 +8,7 @@ showAppDialog(
   Function? acceptFunction,
   Widget? optionalWidget,
   String? acceptMessage,
+  double? optionalWidgetHeight,
   String? image,
   String? title,
 }) {
@@ -55,8 +56,9 @@ showAppDialog(
                         ),
                       Container(
                         constraints: BoxConstraints(
-                            maxHeight:
-                                MediaQuery.of(context).size.height * 0.4),
+                          maxHeight: optionalWidgetHeight ??
+                              MediaQuery.of(context).size.height * 0.4,
+                        ),
                         child: optionalWidget ?? Container(height: 0),
                       ),
                       Padding(
