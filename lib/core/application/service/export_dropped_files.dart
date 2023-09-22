@@ -17,14 +17,41 @@ Future<void> exportMultiAppLocalizationFiles(
   }
 
   String viewedResults = '';
-  for (var item in savingResults) {
-    viewedResults =
-        '$viewedResults${item.fileState.name} : ${item.errorMessage ?? item.savedDirectory}\n';
-  }
+  final ScrollController scrollController = ScrollController();
+
   // ignore: use_build_context_synchronously
   showAppDialog(
     'Files result\n$viewedResults',
     context,
     title: 'Done processing files',
+    optionalWidget: Scrollbar(
+      controller: scrollController,
+      thumbVisibility: true,
+      child: SingleChildScrollView(
+        controller: scrollController,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text.rich(
+            TextSpan(
+              children: [
+                for (var item in savingResults) ...[
+                  TextSpan(
+                    text: '$viewedResults${item.fileState.name}',
+                    style: TextStyle(
+                      color: item.fileState == FileState.success
+                          ? Colors.green
+                          : Colors.red,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' : ${item.errorMessage ?? item.savedDirectory}\n',
+                  ),
+                ]
+              ],
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 }

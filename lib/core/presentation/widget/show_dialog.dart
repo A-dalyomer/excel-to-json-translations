@@ -53,7 +53,12 @@ showAppDialog(
                             textAlign: TextAlign.center,
                           ),
                         ),
-                      optionalWidget ?? Container(),
+                      Container(
+                        constraints: BoxConstraints(
+                            maxHeight:
+                                MediaQuery.of(context).size.height * 0.4),
+                        child: optionalWidget ?? Container(height: 0),
+                      ),
                       Padding(
                         padding: const EdgeInsets.all(16),
                         child: Row(
