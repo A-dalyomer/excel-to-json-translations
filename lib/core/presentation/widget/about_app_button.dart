@@ -1,5 +1,6 @@
 import 'package:excel_json_converter/core/presentation/widget/show_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutAppButton extends StatelessWidget {
   const AboutAppButton({super.key});
@@ -18,11 +19,11 @@ class AboutAppButton extends StatelessWidget {
           thumbVisibility: true,
           child: SingleChildScrollView(
             controller: scrollController,
-            child: const Padding(
-              padding: EdgeInsets.all(8.0),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  Text(
+                  const Text(
                     'This app was made to make the localizations exporting much easier',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -30,7 +31,7 @@ class AboutAppButton extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Text(
+                  const Text(
                     'All you need is an EXCEL file of your app localizations',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -38,7 +39,7 @@ class AboutAppButton extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Text(
+                  const Text(
                     'The file must have the following format:',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -46,7 +47,7 @@ class AboutAppButton extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
-                  Text.rich(
+                  const Text.rich(
                     TextSpan(children: [
                       TextSpan(text: '1 - A Column for each language\n'),
                       TextSpan(
@@ -63,7 +64,7 @@ class AboutAppButton extends StatelessWidget {
                     ),
                     textAlign: TextAlign.start,
                   ),
-                  Text(
+                  const Text(
                     "This application is distributed as is\nWe are not responsible for any data loss or errors\nmade by magenus E.K company\nApp developer ahmad daly omer",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
@@ -71,6 +72,21 @@ class AboutAppButton extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
+                  const Text(
+                    "Consider supporting our other apps by rating them on the play store, You can check our android apps",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.blueGrey,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  TextButton(
+                      onPressed: () => launchUrl(
+                            Uri.parse(
+                                'https://play.google.com/store/apps/developer?id=Win+real+money+by+play+games'),
+                          ),
+                      child: Text('here')),
                 ],
               ),
             ),
