@@ -39,6 +39,13 @@ class AboutAppButton extends StatelessWidget {
                     ),
                     textAlign: TextAlign.center,
                   ),
+                  TextButton(
+                    onPressed: () => launchUrl(
+                      Uri.parse(
+                          'https://docs.google.com/spreadsheets/d/1H0lU0J41BWH0inYkea5jFvVGdDE4GwmyxT1UuoLtQsE/edit?usp=sharing'),
+                    ),
+                    child: const Text('Example file'),
+                  ),
                   const Text(
                     'The file must have the following format:',
                     style: TextStyle(
@@ -57,6 +64,10 @@ class AboutAppButton extends StatelessWidget {
                       TextSpan(
                         text:
                             '3 - the first column must have a value called "language_code" and the values on its row must be the corresponding language code ex: en,ar,de,...\n',
+                      ),
+                      TextSpan(
+                        text:
+                            '4 - for a proper dart code generation, stylized your keys with snake_case',
                       ),
                     ]),
                     style: TextStyle(
@@ -82,11 +93,12 @@ class AboutAppButton extends StatelessWidget {
                     textAlign: TextAlign.center,
                   ),
                   TextButton(
-                      onPressed: () => launchUrl(
-                            Uri.parse(
-                                'https://play.google.com/store/apps/developer?id=Win+real+money+by+play+games'),
-                          ),
-                      child: Text('here')),
+                    onPressed: () => launchUrl(
+                      Uri.parse(
+                          'https://play.google.com/store/apps/developer?id=Win+real+money+by+play+games'),
+                    ),
+                    child: const Text('here'),
+                  ),
                 ],
               ),
             ),
