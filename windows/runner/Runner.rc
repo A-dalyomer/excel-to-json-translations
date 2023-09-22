@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.magenusek" "\0"
-            VALUE "FileDescription", "excel_json_converter" "\0"
+            VALUE "FileDescription", "Localizations exporter" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "excel_json_converter" "\0"
+            VALUE "InternalName", "Localizations exporter" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.magenusek. All rights reserved." "\0"
             VALUE "OriginalFilename", "excel_json_converter.exe" "\0"
-            VALUE "ProductName", "excel_json_converter" "\0"
+            VALUE "ProductName", "Localizations exporter" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

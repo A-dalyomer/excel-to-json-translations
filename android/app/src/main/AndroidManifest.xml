@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.magenusek.excel_json_converter">
    <application
-        android:label="excel_json_converter"
+        android:label="Localizations exporter"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
