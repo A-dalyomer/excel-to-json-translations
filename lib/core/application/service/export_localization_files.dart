@@ -35,11 +35,29 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
           List.generate(excel.tables[table]!.rows[0].length - 1, (index) => {});
 
       List<String> localizationKeys = [];
+      String dartCode = '';
 
       /// loop on all excel rows
       for (var row in excel.tables[table]!.rows) {
         String key = row[0]!.value.toString();
         localizationKeys.add(key);
+        if (key.isNotEmpty) {
+          List<String> keyWords = key.replaceAll(' ', '_').split('_');
+          String variableName = '';
+
+          /// loop on current key words
+          for (int wordIndex = 0; wordIndex < keyWords.length; wordIndex++) {
+            keyWords[wordIndex] = keyWords[wordIndex].toLowerCase();
+            if (wordIndex != 0) {
+              keyWords[wordIndex] = keyWords[wordIndex].capitalizeFirst();
+            }
+          }
+          variableName = keyWords.join();
+          if (key == 'continue' || key == 'this') {
+            variableName = '${variableName}1';
+          }
+          dartCode = '$dartCode  String $variableName = "$key";\n';
+        }
 
         /// loop on row columns
         /// loads translation values
@@ -60,26 +78,7 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
         );
       }
 
-      String dartCode = '';
-      for (String currentKey in localizationKeys) {
-        if (currentKey.isEmpty) {
-          continue;
-        }
-        List<String> keyWords = currentKey.replaceAll(' ', '').split('_');
-        String variableName = '';
-        for (int wordIndex = 0; wordIndex < keyWords.length; wordIndex++) {
-          if (wordIndex != 0) {
-            keyWords[wordIndex] =
-                keyWords[wordIndex].toLowerCase().capitalizeFirst();
-          }
-        }
-        variableName = keyWords.join();
-        if (currentKey == 'continue' || currentKey == 'this') {
-          variableName = '${variableName}1';
-        }
-        dartCode = '$dartCode  String $variableName = "$currentKey";\n';
-      }
-
+      /// export dart code
       dartCode = 'class AppLocalizations {\n$dartCode}';
       await saveFile(
         fileSavePath: saveDirectory.path,
