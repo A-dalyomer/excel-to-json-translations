@@ -22,8 +22,10 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
     }
 
     /// prepare save directory
-    Directory saveDirectory =
-        await getAppFilesDirectory(fileName: selectedFile.name);
+    late Directory saveDirectory;
+    if (!kIsWeb) {
+      saveDirectory = await getAppFilesDirectory(fileName: selectedFile.name);
+    }
 
     /// read the selected file
     var excel = Excel.decodeBytes(selectedFileAsBytes);
@@ -71,7 +73,7 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
       for (var languageMap in allTranslations) {
         String languageCode = languageMap['language_code'] ?? 'unknown';
         await saveFile(
-          fileSavePath: saveDirectory.path,
+          fileSavePath: kIsWeb ? '' : saveDirectory.path,
           fileName: languageCode,
           fileExtension: 'json',
           fileContent: languageMap,
@@ -81,7 +83,7 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
       /// export dart code
       dartCode = 'class AppLocalizations {\n$dartCode}';
       await saveFile(
-        fileSavePath: saveDirectory.path,
+        fileSavePath: kIsWeb ? '' : saveDirectory.path,
         fileName: 'app_localizations',
         fileExtension: 'dart',
         fileContent: dartCode,
