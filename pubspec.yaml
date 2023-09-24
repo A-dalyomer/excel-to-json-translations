@@ -44,6 +44,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   url_launcher: ^6.1.14
   firebase_core: ^2.16.0
+  firebase_analytics: ^10.5.0
 
 dev_dependencies:
   flutter_test:

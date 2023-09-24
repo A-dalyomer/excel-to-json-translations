@@ -1,4 +1,5 @@
 import 'package:excel_json_converter/core/dto/selected_file.dart';
+import 'package:excel_json_converter/src/features/firebase/analytics/application/service/log_analytics_event.dart';
 import 'package:flutter/material.dart';
 
 import '../../dto/saved_file_state.dart';
@@ -18,6 +19,8 @@ Future<void> exportMultiAppLocalizationFiles(
 
   String viewedResults = '';
   final ScrollController scrollController = ScrollController();
+
+  await logFileExportEventEvent(fileState: savingResults);
 
   // ignore: use_build_context_synchronously
   showAppDialog(
