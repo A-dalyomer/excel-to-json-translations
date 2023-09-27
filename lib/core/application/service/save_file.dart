@@ -20,8 +20,8 @@ Future<void> saveFile({
     /// add language localizations file to zip archive
     final ArchiveFile archiveFile = ArchiveFile(
       '$languageCode.json',
-      contentToWrite.length,
-      contentToWrite,
+      const Utf8Encoder().convert(contentToWrite).length,
+      const Utf8Encoder().convert(contentToWrite),
     );
     archive.addFile(archiveFile);
   }
