@@ -1,12 +1,8 @@
 # excel_json_converter
 
-A new Flutter project to export out localization excel file in a useful form to be used in app
+A Flutter project to export localizations from an excel file into a useful form of json to be used in app
 
 ## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
 
 - [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
 - [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
