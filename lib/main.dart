@@ -10,14 +10,12 @@ import 'localizations_app.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: kIsWeb
-        ? DefaultFirebaseOptions.web
-        : Platform.isAndroid
-            ? DefaultFirebaseOptions.currentPlatform
-            : DefaultFirebaseOptions.web,
-  );
-  await FirebaseAnalytics.instance.logAppOpen();
+  if (kIsWeb || Platform.isAndroid) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+    FirebaseAnalytics.instance.logAppOpen();
+  }
 
   runApp(const LocalizationsApp());
 }
