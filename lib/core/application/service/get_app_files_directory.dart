@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 
 import 'get_platform_directory.dart';
 
-Future<Directory> getAppFilesDirectory({required String fileName}) async {
+Future<Directory> getAppFilesDirectory({String? fileName}) async {
   final Directory downloadsDirectory = await getPlatformDirectory();
 
   final appExportFolder = Directory(
@@ -19,6 +19,8 @@ Future<Directory> getAppFilesDirectory({required String fileName}) async {
       print('done creating app export folder');
     }
   }
+  if (fileName == null) return appExportFolder;
+
   final appLocalizationsFolder = Directory(
     '${appExportFolder.path}\\${fileName.split('.').first}',
   );

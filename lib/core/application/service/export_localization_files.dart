@@ -28,7 +28,7 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
     /// prepare save directory
     late Directory saveDirectory;
     if (!kIsWeb) {
-      saveDirectory = await getAppFilesDirectory(fileName: fileName);
+      saveDirectory = await getAppFilesDirectory();
     }
 
     /// read the selected file
