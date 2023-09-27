@@ -1,6 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:excel_json_converter/core/dto/selected_file.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:desktop_drop/desktop_drop.dart';
 
@@ -25,7 +24,7 @@ class _DropFileContainerState extends State<DropFileContainer> {
       onDragDone: (detail) async {
         for (var element in detail.files) {
           SelectedFile bytes = SelectedFile(
-            name: kIsWeb ? 'name' : element.name,
+            name: element.name,
             fileBytes: await element.readAsBytes(),
           );
           droppedFiles.add(bytes);
@@ -62,8 +61,8 @@ class _DropFileContainerState extends State<DropFileContainer> {
             padding: const EdgeInsets.all(6),
             dashPattern: const [6],
             child: AnimatedContainer(
-              height: 200,
-              width: 200,
+              height: MediaQuery.of(context).size.height * 0.5,
+              width: MediaQuery.of(context).size.width * 0.8,
               duration: const Duration(milliseconds: 200),
               decoration: BoxDecoration(
                 color: _dragging

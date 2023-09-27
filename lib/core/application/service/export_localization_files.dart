@@ -21,10 +21,14 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
       return SavedFileState(fileState: FileState.none);
     }
 
+    final List<String> fileNameWords = selectedFile.name.split('.');
+    fileNameWords.removeAt(fileNameWords.length - 1);
+    String fileName = fileNameWords.join();
+
     /// prepare save directory
     late Directory saveDirectory;
     if (!kIsWeb) {
-      saveDirectory = await getAppFilesDirectory(fileName: selectedFile.name);
+      saveDirectory = await getAppFilesDirectory();
     }
 
     /// read the selected file
@@ -68,25 +72,15 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
           allTranslations[columnIndex - 1].addAll({key: translationValue});
         }
       }
+      dartCode = 'class AppLocalizations {\n$dartCode}';
 
       /// export result maps to localization files
-      for (var languageMap in allTranslations) {
-        String languageCode = languageMap['language_code'] ?? 'unknown';
-        await saveFile(
-          fileSavePath: kIsWeb ? '' : saveDirectory.path,
-          fileName: languageCode,
-          fileExtension: 'json',
-          fileContent: languageMap,
-        );
-      }
-
       /// export dart code
-      dartCode = 'class AppLocalizations {\n$dartCode}';
       await saveFile(
+        fileName: fileName,
         fileSavePath: kIsWeb ? '' : saveDirectory.path,
-        fileName: 'app_localizations',
-        fileExtension: 'dart',
-        fileContent: dartCode,
+        languagesList: allTranslations,
+        dartCode: dartCode,
       );
     }
     return SavedFileState(
