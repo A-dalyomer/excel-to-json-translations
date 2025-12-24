@@ -37,14 +37,22 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
     /// loop tables in files
     /// currently only 1 table is present in file
     for (var table in excel.tables.keys) {
-      List<Map<String, String>> allTranslations =
-          List.generate(excel.tables[table]!.rows[0].length - 1, (index) => {});
+      final tableContent = excel.tables[table];
+
+      /// Empty sheet
+      if (tableContent?.rows.isEmpty ?? true) continue;
+
+      /// Generate translations placeholder
+      List<Map<String, String>> allTranslations = List.generate(
+        tableContent!.rows[0].length - 1,
+        (index) => {},
+      );
 
       List<String> localizationKeys = [];
       String dartCode = '';
 
       /// loop on all excel rows
-      for (var row in excel.tables[table]!.rows) {
+      for (var row in tableContent.rows) {
         String? key = row[0]?.value.toString();
         if (key != null && key.isNotEmpty) {
           localizationKeys.add(key);
