@@ -45,9 +45,9 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
 
       /// loop on all excel rows
       for (var row in excel.tables[table]!.rows) {
-        String key = row[0]!.value.toString();
-        localizationKeys.add(key);
-        if (key.isNotEmpty) {
+        String? key = row[0]?.value.toString();
+        if (key != null && key.isNotEmpty) {
+          localizationKeys.add(key);
           List<String> keyWords = key.replaceAll(' ', '_').split('_');
           String variableName = '';
 
@@ -63,6 +63,8 @@ Future<SavedFileState> exportLocalizationFiles(BuildContext context,
             variableName = '${variableName}1';
           }
           dartCode = '$dartCode  String $variableName = "$key";\n';
+        } else {
+          continue;
         }
 
         /// loop on row columns
